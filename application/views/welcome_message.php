@@ -5,12 +5,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <head>
 	<meta charset="utf-8">
 	<title>Login</title>
-	<link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/bootstrap.min.css">
+	<link rel="stylesheet" href="<?php echo base_url('assets/css/bootstrap.min.css'); ?>">
 </head>
 <body>
 
 <div class="container">
-	<h1>Welcome to CodeIgniter!</h1>
+	<div class="row">
+		<div class="col-md-5">
+			<h1>Welcome to CodeIgniter!</h1>
+			<button type="button" class="btn-primary">Basic</button>
+		</div>
+	</div>
 </div>
 
 </body>
