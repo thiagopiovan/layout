@@ -20,7 +20,7 @@
 
     <div id="profile">
         <?php
-            echo "Hello <b id='welcome'><i>" . $username . "</i> !</b>";
+            echo "Olá <b id='welcome'><i>" . $username . "</i> !</b>";
             echo "<br/>";
             echo "<br/>";
             echo "Bem-vindo!";
@@ -34,7 +34,33 @@
         <b id="logout"><a href="logout">Desconectar-se</a></b>
     </div>
 
-    <br/>
+    <hr>
 
+    <div id="add-record">
+        <p><a href="<?php echo site_url('login'); ?>">Home</a> | <a href="<?php echo site_url('login/add_records'); ?>">Add Records</a></p>
+    </div>
+
+    <hr>
+
+    <div id="records"> 
+        <table border='1' cellpadding='4' style="width: 100%;">
+            <tr>
+                <th>ID</th>
+                <th>Text</th>
+                <th>Action</th>
+            </tr>
+            <?php foreach ($records as $data): ?>
+                <tr>
+                    <td><?php echo $data['id']; ?></td>
+                    <td><?php echo $data['text']; ?></td>
+                    <td>
+                        <a href="<?php echo site_url('login/view/'.$data['id']); ?>">View</a> | 
+                        <a href="<?php echo site_url('login/edit/'.$data['id']); ?>">Edit</a> | 
+                        <a href="<?php echo site_url('login/delete/'.$data['id']); ?>" onClick="return confirm('Are you sure you want to delete?')">Delete</a>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+        </table>
+    </div>
 </body>
 </html>

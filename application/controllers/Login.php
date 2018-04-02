@@ -60,7 +60,8 @@ class Login extends CI_Controller {
 		
 		if ($this->form_validation->run() == FALSE) {
 			if(isset($this->session->userdata['logged_in'])){
-				$this->load->view('admin');
+				$data['records'] = $this->login_model->get_records();
+				$this->load->view('admin', $data);
 			}else{
 				$this->load->view('login');
 			}
@@ -84,7 +85,8 @@ class Login extends CI_Controller {
 
 					// Add user data in session
 					$this->session->set_userdata('logged_in', $session_data);
-					$this->load->view('admin');
+					$data['records'] = $this->login_model->get_records();
+					$this->load->view('admin', $data);
 				}
 			} else {
 				$data = array(
@@ -106,4 +108,69 @@ class Login extends CI_Controller {
 		$data['message_display'] = 'Desconectado!';
 		$this->load->view('login', $data);
 	}		
+
+	public function add_records() {	
+		$this->form_validation->set_rules('text', 'Texto', 'trim|required');
+
+		if ($this->form_validation->run() == FALSE) {
+			$this->load->view('add_records');
+		} else {
+
+			$result = $this->login_model->record_insert();
+
+			if ($result == TRUE) {
+				$data['message_display'] = 'Registro cadastrado!';
+				$this->load->view('login', $data);
+			} 
+		}
+	}
+
+	public function edit()
+    {        
+		$id = $this->uri->segment(3);
+
+        if (empty($id))
+        {
+            show_404();
+        }
+        
+        $data['record'] = $this->login_model->get_records($id);
+        
+        $this->form_validation->set_rules('text', 'Texto', 'required');
+ 
+        if ($this->form_validation->run() === FALSE)
+        {
+            $this->load->view('edit', $data);
+        }
+        else
+        {
+            $this->login_model->record_insert($id);
+            redirect( base_url() . 'index.php/login');
+        }
+	}
+	
+	public function delete()
+    {
+        $id = $this->uri->segment(3);
+        
+        if (empty($id))
+        {
+            show_404();
+        }
+        
+        $this->login_model->delete_record($id);        
+        redirect( base_url() . 'index.php/login');        
+	}
+	
+	public function view($id = 0)
+    {
+        $data['record'] = $this->login_model->get_records($id);
+        
+        if (empty($data['record']))
+        {
+            show_404();
+		}
+		
+        $this->load->view('view', $data);
+    }
 }
